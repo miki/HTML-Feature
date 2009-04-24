@@ -1,0 +1,68 @@
+Revision history for Perl extension HTML::Feature.
+
+
+2.00006 2008.10.05
+    - fix a bug that improperty joins of several words
+    - set 'user_agent' option
+    - an object of HTML::Feature::Engine can recognize the base_url
+      via context object ( $c->{base_url} )
+    - add test codes
+
+2.00005 2008.08.15
+    - set 'timeout' option
+
+2.00004 2007.12.9
+    - remove caching mechanism when traversing HTML tree
+    - fix a bug at engine module selector
+
+2.00004_00 (DEVELOPER RELEASE)  2007.11.07
+    - change the calling semantics of parse(). Now it accepts an URI
+      string/object, an HTTP::Response object, or a scalar ref, which in
+      case will be interpreted as raw HTML.
+    - localize $Encode::Guess::NoUTFAutoGuess
+    - no longer store parse data in the instance
+    - introduce HTML::Feature::Result
+    - fix memory leaks caused by HTML::Element
+    - use caching when traversing HTML tree
+
+2.0.3  2007.11.05
+    - add HTML::Element object as data type of return value
+
+2.0.2  2007.10.25
+    - set 'http_proxy' option 
+
+2.0.1  2007.10.16
+    - rewrite all code
+
+1.0.5  2007.07.06
+    - bug fix ( memory leak )
+
+1.0.4  2007.05.24
+    - add some functions and bug fix
+
+1.0.3  2007.03.12
+    - change the encode module from "Encode::Detect" to "Encode::Guess"
+
+1.0.2  2007.02.26
+    - rewrite 'META.xml' and 'Makefile.PL'
+
+1.0.1  2007.02.23
+    - largely changed analysis specifications of the script inside
+
+0.2.0  2007.01.17
+    - add some functions and bug fix
+
+0.1.1  2007.01.08
+    - It is deleted a definition of Data::Dumper by a module
+
+0.0.1  Wed Dec 27 12:49:20 2006
+	- original version; created by h2xs 1.23 with options
+		-AX -n HTML::Feature
+
+
+
+
+
+
+
+
