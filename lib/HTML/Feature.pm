@@ -54,12 +54,16 @@ sub parse_url {
     my $self          = shift;
     my $url           = shift;
     my $http_response = $self->fetcher->fetch($url);
-    $self->parse_response($http_response);
+    $self->parse_response( $http_response, @_ );
 }
 
 sub parse_response {
     my $self          = shift;
     my $http_response = shift;
+    my $args          = shift;
+    if ( $args->{element_flag} ) {
+        $self->{element_flag} = $args->{element_flag};
+    }
     $self->{base_url} = $http_response->base;
     my $html = $http_response->content;
     unless ( $self->config->{not_decode} ) {
@@ -71,11 +75,14 @@ sub parse_response {
 sub parse_html {
     my $self     = shift;
     my $html_ref = shift;
-    my $url      = shift;
-    if($url){
-        $self->{base_url} = $url;
+    my $args     = shift;
+    if ( $args->{url} ) {
+        $self->{base_url} = $args->{url};
     }
-    my $html     = $$html_ref;
+    if ( $args->{element_flag} ) {
+        $self->{element_flag} = $args->{element_flag};
+    }
+    my $html = $$html_ref;
     unless ( $self->config->{not_decode} ) {
         $html = $self->decoder->decode($html);
     }
