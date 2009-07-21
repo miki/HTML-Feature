@@ -1,26 +1,27 @@
-HTML-Feature
-==========================
-
-This module extracts some feature sentence from HTML.
-
+This is Perl module HTML::Feature.
 
 INSTALLATION
 
-To install this module type the following:
+HTML::Feature installation is straightforward. If your CPAN shell is set up,
+you should just be able to do
 
-    perl Makefile.PL
-    make
-    make test
-    make install
+    % cpan HTML::Feature
 
+Download it, unpack it, then build it as per the usual:
 
+    % perl Makefile.PL
+    % make && make test
 
+Then install it:
 
-COPYRIGHT AND LICENCE
+    % make install
 
-Copyright (C) 2007 by Takeshi Miki <miki@cpan.org> 
+DOCUMENTATION
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.8 or,
-at your option, any later version of Perl 5 you may have available.
+HTML::Feature documentation is available as in POD. So you can do:
 
+    % perldoc HTML::Feature
+
+to read the documentation online with your favorite pager.
+
+Takeshi Miki

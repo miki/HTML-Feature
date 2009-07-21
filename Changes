@@ -1,5 +1,8 @@
 Revision history for Perl extension HTML::Feature.
 
+3.00001_01 2009.07.22
+    - major version up
+    - ( but, developer release )
 
 2.00006 2008.10.05
     - fix a bug that improperty joins of several words
