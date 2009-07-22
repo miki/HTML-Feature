@@ -2,7 +2,6 @@ package HTML::Feature::Decoder;
 use strict;
 use warnings;
 use Data::Decode;
-use Data::Decode::Chain;
 use Data::Decode::Encode::HTTP::Response;
 use Data::Decode::Encode::Guess;
 use Data::Decode::Encode::Guess::JP;
@@ -26,13 +25,11 @@ sub decoder {
     my $self = shift;
     $self->_decoder or sub {
         my $decoder = Data::Decode->new(
-            strategy => Data::Decode::Chain->new(
-                decoders => [
-                    Data::Decode::Encode::HTTP::Response->new,
-                    Data::Decode::Encode::Guess->new,
-                    Data::Decode::Encode::Guess::JP->new,
-                ]
-            )
+            decoder => [
+                Data::Decode::Encode::HTTP::Response->new,
+                Data::Decode::Encode::Guess->new,
+                Data::Decode::Encode::Guess::JP->new,
+            ]
         );
         $self->_decoder($decoder);
       }

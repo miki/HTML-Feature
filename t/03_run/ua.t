@@ -4,7 +4,9 @@ use HTML::Feature;
 use Test::More;
 
 my $f = HTML::Feature->new(
-    user_agent => 'HTML-Feature',
+    config => {
+        user_agent => 'HTML-Feature',
+    }
 );
 my $text = $f->parse("http://www.ugtop.com/spill.shtml")->text;
 

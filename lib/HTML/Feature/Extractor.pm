@@ -4,6 +4,7 @@ use warnings;
 use HTML::TreeBuilder;
 use Statistics::Lite qw(statshash);
 use HTML::Feature::Result;
+use Data::Dumper;
 use base qw(HTML::Feature::Base);
 
 sub new {
@@ -28,17 +29,21 @@ sub _site_regexp {
     my $c        = $self->context;
     my $url      = $c->{base_url};
     if ($url) {
-        while ( my ( $site, $ref ) = each %{ $c->config->{site_regexp} } ) {
+        my %site_regexp = %{ $c->config->{site_regexp} };
+        while ( my ( $site, $ref ) = each %site_regexp ) {
+            Dumper $ref; # magic??
             if ( $url =~ /$site/ ) {
-                my $root = HTML::TreeBuilder->new_form_content($$html_ref);
+                my $root = HTML::TreeBuilder->new_from_content($$html_ref);
                 $root->eof;
-                my $regex_key   = $ref->{regex_key};
-                my $regex_value = $ref->{regex_value};
-                my $html;
-                for ( $root->look_down( $regex_key, qr/$regex_value/ ) ) {
-                    $html .= $_->as_HTML;
+                my ( $regex_key, $regex_value ) = each %$ref;
+                my $html = '<div>';
+                if ( $regex_key and $regex_value ) {
+                    for ( $root->look_down( $regex_key, qr/$regex_value/ ) ) {
+                        $html .= $_->as_HTML;
+                    }
+                    $html .= '</div>';
+                    return $self->_tag_structure( \$html );
                 }
-                return $self->_tag_structure( \$html );
             }
         }
     }
@@ -48,8 +53,9 @@ sub _site_regexp {
 sub _google_adsence {
     my $self     = shift;
     my $html_ref = shift;
-    if ( $$html_ref =~ 
-        m|<!--\s+google_ad_section_start\s+-->(.+)<!--\s+google_ad_section_end\s+-->|os )
+    if ( $$html_ref =~
+m|<!--\s+google_ad_section_start\s+-->(.+)<!--\s+google_ad_section_end\s+-->|os
+      )
     {
         my $html = $1;
         return $self->_tag_structure( \$html );

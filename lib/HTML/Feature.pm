@@ -92,7 +92,13 @@ sub parse_html {
 sub feature {
     my $self   = __PACKAGE__->new;
     my $result = $self->parse(@_);
-    return $result->text;
+    my %ret    = (
+        text    => $result->text,
+        title   => $result->title,
+        desc    => $result->desc,
+        element => $result->element
+    );
+    return wantarray ? %ret : $ret{text};
 }
 
 sub _setup {
