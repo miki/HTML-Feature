@@ -7,19 +7,15 @@ use HTML::Feature::Result;
 use Data::Dumper;
 use base qw(HTML::Feature::Base);
 
-sub new {
-    my $class = shift;
-    my $self  = $class->SUPER::new(@_);
-}
 
 sub extract {
     my $self     = shift;
     my $html_ref = shift;
 
-    my $result =
-         $self->_site_regexp($html_ref)
-      || $self->_google_adsence($html_ref)
-      || $self->_tag_structure($html_ref);
+    my $result 
+        = $self->_site_regexp($html_ref)
+        || $self->_google_adsence($html_ref)
+        || $self->_tag_structure($html_ref);
     return $result;
 }
 
@@ -29,20 +25,19 @@ sub _site_regexp {
     my $c        = $self->context;
     my $url      = $c->{base_url};
     if ($url) {
-        my %site_regexp = %{ $c->config->{site_regexp} };
+        my %site_regexp = %{ $c->rules->{site_regexp} };
         while ( my ( $site, $ref ) = each %site_regexp ) {
-            Dumper $ref; # magic??
+            Dumper $ref;    # magic??
             if ( $url =~ /$site/ ) {
                 my $root = HTML::TreeBuilder->new_from_content($$html_ref);
                 $root->eof;
                 my ( $regex_key, $regex_value ) = each %$ref;
-                my $html = '<div>';
                 if ( $regex_key and $regex_value ) {
+                    my $html;
                     for ( $root->look_down( $regex_key, qr/$regex_value/ ) ) {
                         $html .= $_->as_HTML;
                     }
-                    $html .= '</div>';
-                    return $self->_tag_structure( \$html );
+                    return $self->_tag_structure( \$html ) if $html;
                 }
             }
         }
@@ -53,9 +48,9 @@ sub _site_regexp {
 sub _google_adsence {
     my $self     = shift;
     my $html_ref = shift;
-    if ( $$html_ref =~
-m|<!--\s+google_ad_section_start\s+-->(.+)<!--\s+google_ad_section_end\s+-->|os
-      )
+    if ( $$html_ref
+        =~ m|<!--\s+google_ad_section_start\s+-->(.+)<!--\s+google_ad_section_end\s+-->|os
+        )
     {
         my $html = $1;
         return $self->_tag_structure( \$html );
@@ -79,7 +74,8 @@ sub _tag_structure {
         $result->title( $title->as_text );
     }
 
-    if ( my $desc = $root->look_down( _tag => 'meta', name => 'description' ) )
+    if ( my $desc
+        = $root->look_down( _tag => 'meta', name => 'description' ) )
     {
         my $string = $desc->attr('content');
         $string =~ s{<br>}{}xms;
@@ -97,11 +93,11 @@ sub _tag_structure {
         my $text_ration = $text_length / ( $html_length + 0.001 );
 
         next
-          if (  $c->{max_bytes}
+            if ($c->{max_bytes}
             and $c->{max_bytes} =~ /^[\d]+$/
             && $text_length > $c->{max_bytes} );
         next
-          if (  $c->{min_bytes}
+            if ($c->{min_bytes}
             and $c->{min_bytes} =~ /^[\d]+$/
             and $text_length < $c->{min_bytes} );
 
@@ -126,12 +122,11 @@ sub _tag_structure {
 
         push(
             @ratio,
-            (
-                $text_length -
-                  $node_hash{a_length} -
-                  $node_hash{option_length} -
-                  $node_hash{short_string_length}
-              ) * $text_ration
+            (         $text_length 
+                    - $node_hash{a_length}
+                    - $node_hash{option_length}
+                    - $node_hash{short_string_length}
+                ) * $text_ration
         );
         push( @depth, $node->depth() );
 
@@ -151,26 +146,23 @@ sub _tag_structure {
     # avoid memory leak
     $root->delete() unless $c->{element_flag};
 
-    my @sorted =
-      sort { $data->[$b]->{score} <=> $data->[$a]->{score} }
-      map {
+    my @sorted
+        = sort { $data->[$b]->{score} <=> $data->[$a]->{score} }
+        map {
 
-        my $ratio_std =
-          ( ( $ratio[$_] || 0 ) - ( $ratio{mean} || 0 ) ) /
-          ( $ratio{stddev} + 0.001 );
-        my $depth_std =
-          ( ( $depth[$_] || 0 ) - ( $depth{mean} || 0 ) ) /
-          ( $depth{stddev} + 0.001 );
-        my $order_std =
-          ( ( $order[$_] || 0 ) - ( $order{mean} || 0 ) ) /
-          ( $order{stddev} + 0.001 );
+        my $ratio_std = ( ( $ratio[$_] || 0 ) - ( $ratio{mean} || 0 ) )
+            / ( $ratio{stddev} + 0.001 );
+        my $depth_std = ( ( $depth[$_] || 0 ) - ( $depth{mean} || 0 ) )
+            / ( $depth{stddev} + 0.001 );
+        my $order_std = ( ( $order[$_] || 0 ) - ( $order{mean} || 0 ) )
+            / ( $order{stddev} + 0.001 );
 
         $data->[$_]->{score} = $ratio_std + $depth_std + $order_std;
         $_;
-      } ( 0 .. $i );
+        } ( 0 .. $i );
 
     $data->[ $sorted[0] ]->{text}
-      and $data->[ $sorted[0] ]->{text} =~ s/ $//s;
+        and $data->[ $sorted[0] ]->{text} =~ s/ $//s;
 
     $result->text( $data->[ $sorted[0] ]->{text} );
 
@@ -203,8 +195,8 @@ sub _walk_tree {
             }
         }
         if ( bytes::length( $node->as_text ) < 20 ) {
-            $node_hash_ref->{short_string_length} +=
-              bytes::length( $node->as_text );
+            $node_hash_ref->{short_string_length}
+                += bytes::length( $node->as_text );
         }
         $self->_walk_tree( $_, $node_hash_ref ) for $node->content_list();
     }

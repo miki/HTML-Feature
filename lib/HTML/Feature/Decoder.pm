@@ -9,11 +9,6 @@ use base qw(HTML::Feature::Base);
 
 __PACKAGE__->mk_accessors($_) for qw(_decoder);
 
-sub new {
-    my $class = shift;
-    my $self  = $class->SUPER::new(@_);
-}
-
 sub decode {
     my $self    = shift;
     my $data    = shift;

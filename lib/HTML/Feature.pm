@@ -10,7 +10,7 @@ use HTML::Feature::Decoder;
 use HTML::Feature::Extractor;
 use base qw(HTML::Feature::Base);
 
-__PACKAGE__->mk_accessors($_) for qw(fetcher decoder extractor);
+__PACKAGE__->mk_accessors($_) for qw(rules fetcher decoder extractor);
 
 our @EXPORT_OK = qw(feature);
 our $VERSION   = '3.00001_01';
@@ -103,10 +103,31 @@ sub feature {
 
 sub _setup {
     my $self = shift;
+    $self->_load_rules;
     $self->{enc_type} ||= 'utf8';
     $self->fetcher( HTML::Feature::Fetcher->new( context => $self ) );
     $self->decoder( HTML::Feature::Decoder->new( context => $self ) );
     $self->extractor( HTML::Feature::Extractor->new( context => $self ) );
+}
+
+sub _load_rules {
+    my $self = shift;
+    ## set default rules
+    $self->rules(
+        {
+            site_regexp => {
+                qr/blog.goo.ne.jp/   => { class => qr/^entry$|^etbody$/i },
+                qr/hatena.ne.jp/     => { class => qr/^body$/i },
+                qr/blog.livedoor.jp/ => { class => qr/^main$/ },
+            },
+
+        }
+    );
+    ## add users rules
+    if( my $ref = $self->config->{site_regexp}){
+        my($site, $rule) = each(%$ref); 
+        $self->rules->{site_regexp}->{$site} = $rule;
+    }
 }
 
 1;

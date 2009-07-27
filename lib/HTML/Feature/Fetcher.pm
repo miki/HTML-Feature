@@ -6,11 +6,6 @@ use base qw(HTML::Feature::Base);
 
 __PACKAGE__->mk_accessors($_) for qw(_user_agent);
 
-sub new {
-    my $class = shift;
-    my $self  = $class->SUPER::new(@_);
-}
-
 sub fetch {
     my $self          = shift;
     my $url           = shift;
@@ -24,8 +19,8 @@ sub user_agent {
         my $ua = LWP::UserAgent->new;
         my $c  = $self->context;
         $c->config->{user_agent} and $ua->agent( $c->config->{user_agent} );
-        $c->config->{http_proxy} and $ua->agent( $c->config->{http_proxy} );
-        $c->config->{timeout}    and $ua->agent( $c->config->{timeout} );
+        $c->config->{http_proxy} and $ua->proxy( ['http'], $c->config->{http_proxy} );
+        $c->config->{timeout}    and $ua->timeout( $c->config->{timeout} );
         $self->_user_agent($ua);
       }
       ->();

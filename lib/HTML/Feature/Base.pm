@@ -5,14 +5,6 @@ use base qw(Class::Accessor::Fast Class::Data::ConfigHash);
 
 __PACKAGE__->mk_accessors($_) for qw(context);
 
-__PACKAGE__->config({ 
-    site_regexp => { 
-        qr/goo.ne.jp/ => { class => qr/^entry$|^etbody$/ },
-        qr/hatena.ne.jp/ => { class => qr/^body$/ }
-    },
-        
-});
-
 sub new {
     my $class  = shift;
     my %args   = @_;
