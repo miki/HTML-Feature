@@ -104,7 +104,7 @@ __END__
 
 =head1 NAME
 
-HTML::Feature::FronParser - Inner dispatcher.
+HTML::Feature::FrontParser - Inner dispatcher.
 
 =head1 SYNOPSIS
 

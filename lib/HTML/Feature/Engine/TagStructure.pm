@@ -159,5 +159,30 @@ sub _tag_cleaning {
     }
     $$html_ref =~ s{\x7f}{}xmg;
 }
-
 1;
+__END__
+
+=head1 NAME
+
+HTML::Feature::Engine::TagStructure - default Engine
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 run()
+
+=head1 author
+
+takeshi miki e<lt>miki@cpan.orge<gt>
+
+=head1 license
+
+this library is free software; you can redistribute it and/or modify
+it under the same terms as perl itself.
+
+=head1 see also
+
+=cut
