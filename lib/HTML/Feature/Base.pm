@@ -21,15 +21,15 @@ __END__
 
 =head1 NAME
 
-HTML::Feature::Base -
+HTML::Feature::Base - Base class of HTML::Feature
 
 =head1 SYNOPSIS
 
-  use HTML::Feature::Base;
+  use base qw(HTML::Feature::Base);
 
 =head1 DESCRIPTION
 
-HTML::Feature::Base is
+HTML::Feature::Base is base class of HTML::Feature
 
 =head1 METHODS
 

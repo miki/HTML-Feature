@@ -20,16 +20,19 @@ sub run {
     my $html_ref = shift;
     my $url      = shift;
     my $c        = $self->context;
-    my $result = undef;
-    LABEL:
+    my $result   = HTML::Feature::Result->new;
+  LABEL:
     for my $engine ( @{ $self->{engines} } ) {
-        $result = $engine->run( $html_ref, $url );
-        if ( defined $c->{enc_type} ) {
-            $result->title( Encode::encode( $c->{enc_type}, $result->title ) );
-            $result->desc( Encode::encode( $c->{enc_type}, $result->desc ) );
-            $result->text( Encode::encode( $c->{enc_type}, $result->text ) );
-        }
+        $result = $engine->run( $html_ref, $url, $result );
         if ( $result->{matched_engine} ) {
+            if ( defined $c->{enc_type} ) {
+                $result->title(
+                    Encode::encode( $c->{enc_type}, $result->title ) );
+                $result->desc(
+                    Encode::encode( $c->{enc_type}, $result->desc ) );
+                $result->text(
+                    Encode::encode( $c->{enc_type}, $result->text ) );
+            }
             last LABEL;
         }
     }
@@ -54,5 +57,37 @@ sub _setup {
         }
     }
 }
-1;
 
+1;
+__END__
+
+=head1 NAME
+
+HTML::Feature::Engine -
+
+=head1 SYNOPSIS
+
+  use HTML::Feature::Engine;
+
+=head1 DESCRIPTION
+
+HTML::Feature::Engine is
+
+=head1 METHODS
+
+=head2 new
+
+=head2 run
+
+=head1 AUTHOR
+
+Takeshi Miki E<lt>miki@cpan.orgE<gt>
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+=cut

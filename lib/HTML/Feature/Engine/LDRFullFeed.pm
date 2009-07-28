@@ -2,12 +2,10 @@ package HTML::Feature::Engine::LDRFullFeed;
 use strict;
 use warnings;
 use HTML::TreeBuilder::XPath;
-use HTML::Feature::Result;
 use LWP::Simple;
 use Storable qw(retrieve store);
 use JSON;
 use Encode;
-use Data::Dumper;
 use base qw(HTML::Feature::Base);
 
 __PACKAGE__->mk_accessors($_) for qw(_LDRFullFeed);
@@ -16,12 +14,11 @@ sub run {
     my $self     = shift;
     my $html_ref = shift;
     my $url      = shift;
-    my $c        = $self->context;
-    my $tree = HTML::TreeBuilder::XPath->new;
+    my $result   = shift;
+    my $tree     = HTML::TreeBuilder::XPath->new;
     $tree->parse($$html_ref);
     $tree->eof;
     my $site_info = $self->_detect_siteinfo($url);
-    my $result    = HTML::Feature::Result->new;
 
     if ($site_info) {
         my $xpath = $site_info->{data}->{xpath};
@@ -29,17 +26,21 @@ sub run {
         for my $node ( $tree->findnodes($xpath) ) {
             $text .= $node->as_text;
         }
-        $result->text( $text );
-        if ( my $title = $tree->look_down( _tag => "title" ) ) {
-            $result->title( $title->as_text );
+        $result->text($text);
+        if ( !$result->title ) {
+            if ( my $title = $tree->look_down( _tag => "title" ) ) {
+                $result->title( $title->as_text );
+            }
         }
-        if ( my $desc =
-            $tree->look_down( _tag => 'meta', name => 'description' ) )
-        {
-            $result->desc( $desc->attr("content") );
+        if ( !$result->desc ) {
+            if ( my $desc =
+                $tree->look_down( _tag => 'meta', name => 'description' ) )
+            {
+                $result->desc( $desc->attr("content") );
+            }
         }
     }
-    if ( $result->text() ) {
+    if ( $result->text ) {
         $result->{matched_engine} = 'LDRFullFeed';
     }
     return $result;
@@ -109,3 +110,31 @@ sub _detect_siteinfo {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+HTML::Feature::Engine::LDRFullFeed - An engine module that uses wedata's database (LDRFullFeed)
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 run
+
+=head2 LDRFullFeed
+
+=head1 AUTHOR
+
+Takeshi Miki E<lt>miki@cpan.orgE<gt>
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+=cut

@@ -29,4 +29,38 @@ sub request {
 }
 
 1;
+__END__
 
+=head1 NAME
+
+HTML::Feature::Fetcher - Fetch a HTML document. 
+
+=head1 SYNOPSIS
+
+  use HTML::Feature::Fetcher;
+
+  my $fetcher       = HTML::Feature::Fetch->new;
+  my $http_response = $fetcher->request($url);
+
+=head1 DESCRIPTION
+
+This is a wrapper LWP::UserAgent.
+
+=head1 METHODS
+
+=head2 new
+
+=head2 request 
+
+=head1 AUTHOR
+
+Takeshi Miki E<lt>miki@cpan.orgE<gt>
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+=cut

@@ -33,3 +33,38 @@ sub decode {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+HTML::Feature::Decoder - Data decoder that relies on Data::Decode. 
+
+=head1 SYNOPSIS
+
+  use HTML::Feature::Decoder;
+
+  my $decoder = HTML::Feature::Decoder->new( context => $html_feature );
+  my $decoded = $decoder->decode($indata); # $in_data is either of a string of HTML document or a HTTP::Response object
+
+=head1 DESCRIPTION
+
+This is a wrapper of Data::Decode.
+
+=head1 METHODS
+
+=head2 new
+
+=head2 decode 
+
+=head1 AUTHOR
+
+Takeshi Miki E<lt>miki@cpan.orgE<gt>
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+=cut

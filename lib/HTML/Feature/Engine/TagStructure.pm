@@ -6,27 +6,31 @@ use HTML::TreeBuilder::LibXML;
 use HTML::Feature::Result;
 use base qw(HTML::Feature::Base);
 
-
 sub run {
     my $self     = shift;
     my $html_ref = shift;
     my $url      = shift;
+    my $result   = shift;
     my $c        = $self->context;
     $self->_tag_cleaning($html_ref);
     my $tree = HTML::TreeBuilder::LibXML->new;
     $tree->parse($$html_ref);
     $tree->eof;
-    my $result = HTML::Feature::Result->new;
     my $data;
 
-    if ( my $title = $tree->findvalue('//title') ) {
-        $result->title($title);
+    if ( !$result->title ) {
+        if ( my $title = $tree->findvalue('//title') ) {
+            $result->title($title);
+        }
     }
-    if ( my $desc = $tree->look_down( _tag => 'meta', name => 'description' ) )
-    {
-        my $string = $desc->attr('content');
-        $string =~ s{<br>}{}xms;
-        $result->desc($string);
+    if ( !$result->desc ) {
+        if ( my $desc =
+            $tree->look_down( _tag => 'meta', name => 'description' ) )
+        {
+            my $string = $desc->attr('content');
+            $string =~ s{<br>}{}xms;
+            $result->desc($string);
+        }
     }
     my $i = 0;
     my @ratio;
@@ -111,7 +115,7 @@ sub run {
         $result->root($tree);
         $result->element( $data->[ $sorted[0] ]->{element} );
     }
-    if($result->text){
+    if ( $result->text ) {
         $result->{matched_engine} = 'TagStructure';
     }
     return $result;
