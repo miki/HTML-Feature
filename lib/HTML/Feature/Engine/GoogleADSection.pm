@@ -14,12 +14,12 @@ sub run {
     $tree->parse($$html_ref);
     $tree->eof;
 
-    if ( !$self->title ) {
+    if ( !$result->title ) {
         if ( my $title = $tree->findvalue('//title') ) {
             $result->title($title);
         }
     }
-    if ( !$self->desc ) {
+    if ( !$result->desc ) {
         if ( my $desc =
             $tree->look_down( _tag => 'meta', name => 'description' ) )
         {

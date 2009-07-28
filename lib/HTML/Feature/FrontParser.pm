@@ -19,7 +19,7 @@ sub parse {
     if ( !$pkg ) {
         if ( my $ref = ref $arg ) {
             if ( $ref eq 'SCALAR' ) {
-                my $html = $arg;
+                my $html = $$arg;
                 unless ( $self->context->config->{not_decode} ) {
                     $html = $self->decoder->decode($html);
                 }
