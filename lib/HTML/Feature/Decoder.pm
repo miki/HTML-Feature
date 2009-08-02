@@ -21,7 +21,7 @@ sub _setup {
     my $self    = shift;
     my $decoder = Data::Decode->new(
         strategy => Data::Decode::Chain->new(
-            decoder => [
+            decoders => [
                 Data::Decode::Encode::HTTP::Response->new,
                 Data::Decode::Encode::Guess::JP->new,
                 Data::Decode::Encode::Guess->new,
