@@ -17,7 +17,7 @@ requires 'Storable';
 requires 'JSON';
 requires 'HTML::TreeBuilder::LibXML'; 
 requires 'HTML::TreeBuilder::XPath'; 
-requires 'Data::Decode', '0.00007_01';
+requires 'Data::Decode', '0.00006';
 
 build_requires 'Test::More';
 use_test_base;

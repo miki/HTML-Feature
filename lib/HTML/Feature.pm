@@ -7,7 +7,7 @@ use base qw(HTML::Feature::Base);
 
 __PACKAGE__->mk_accessors($_) for qw(_front_parser _engine);
 
-our $VERSION = '3.00003';
+our $VERSION = '3.00004';
 
 sub new {
     my $class = shift;

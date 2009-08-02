@@ -1,6 +1,9 @@
 Revision history for Perl extension HTML::Feature
 
 
+3.00004 2009.08.02
+    - down the version of Data::Decode  ( from 0.00007_01 to 0.00006 )
+
 3.00003 2009.07.27
     - fix POD file
 
