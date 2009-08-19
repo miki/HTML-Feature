@@ -74,7 +74,7 @@ sub fetcher {
     if ( !$args ) {
         $self->_fetcher or sub {
             HTML::Feature::Fetcher->require or die $@;
-            my $fetcher = HTML::Feature::Fetcher->new( context => $self );
+            my $fetcher = HTML::Feature::Fetcher->new( context => $self->context );
             $self->_fetcher($fetcher);
           }
           ->();
@@ -90,7 +90,7 @@ sub decoder {
     if ( !$args ) {
         $self->_decoder or sub {
             HTML::Feature::Decoder->require or die $@;
-            $self->_decoder( HTML::Feature::Decoder->new( context => $self ) );
+            $self->_decoder( HTML::Feature::Decoder->new( context => $self->context ) );
           }
           ->();
     }

@@ -118,6 +118,7 @@ sub run {
     if ( $result->text ) {
         $result->{matched_engine} = 'TagStructure';
     }
+    $tree->delete;
     return $result;
 }
 

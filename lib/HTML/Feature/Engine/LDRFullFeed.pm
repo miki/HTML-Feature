@@ -40,9 +40,12 @@ sub run {
             }
         }
     }
+
     if ( $result->text ) {
         $result->{matched_engine} = 'LDRFullFeed';
     }
+
+    $tree->delete;
     return $result;
 }
 

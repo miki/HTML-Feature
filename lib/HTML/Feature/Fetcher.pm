@@ -16,7 +16,23 @@ sub new {
 
 sub _setup {
     my $self    = shift;
+    my $c       = $self->context;
     my $fetcher = LWP::UserAgent->new;
+    my $config  = $c->config;
+    if ( $config->{user_agent} ) {
+        $fetcher->user_agent( $config->{user_agent} );
+    }
+    if ( $config->{http_proxy} ) {
+        $fetcher->proxy( ['http'], $config->{http_proxy} );
+    }
+    else {
+        $fetcher->env_proxy;
+    }
+    if ( $config->{timeout} ) {
+        $fetcher->timeout( $config->{timeout} );
+    use Data::Dumper;
+        print Dumper $fetcher;
+    }
     $self->fetcher($fetcher);
 }
 

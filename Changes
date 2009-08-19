@@ -1,5 +1,13 @@
 Revision history for Perl extension HTML::Feature
 
+3.00006 2009.08.19
+    - fix a memory leak
+    - and some bug fix
+    - Oh, today is my wife's birthday! I forgot it!
+
+3.00005 2009.08.03
+    - fix a bug
+        HTML::Feature::Decoder
 
 3.00004 2009.08.03
     - fix a bug

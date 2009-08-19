@@ -40,6 +40,7 @@ sub run {
         $result->text($text);
         $result->{matched_engine} = 'GoogleADSection';
     }
+    $tree->delete;
     return $result;
 }
 1;
