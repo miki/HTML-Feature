@@ -1,5 +1,8 @@
 Revision history for Perl extension HTML::Feature
 
+3.00006 2009.08.21
+    - utf8::encode() the html string before passed to Data::Decode
+
 3.00006 2009.08.19
     - fix a memory leak
     - and some bug fix

@@ -7,7 +7,7 @@ use base qw(HTML::Feature::Base);
 
 __PACKAGE__->mk_accessors($_) for qw(_front_parser _engine);
 
-our $VERSION = '3.00006';
+our $VERSION = '3.00007';
 
 sub new {
     my $class = shift;
@@ -181,7 +181,7 @@ If you want to customize the behavior of HTML::Feature, specify your own engine 
 
     my $result = $f->parse($url);
     # or
-    my $result = $f->parse($html_ref);
+    my $result = $f->parse($html_ref,[$url]);
     # or
     my $result = $f->parse($http_response);
 
@@ -194,9 +194,9 @@ HTML::Feature will detect and delegate to the appropriate method (see below)
 
 Parses an URL. This method will use LWP::UserAgent to fetch the given url.
 
-=head2 parse_html($html)
+=head2 parse_html($html, [$url])
 
-Parses a string containing HTML.
+Parses a string containing HTML. If you use 'HTML::Feature::Engine::LDRFullFeed', $url will be necessary.
 
 =head2 parse_response($http_response)
 

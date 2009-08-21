@@ -21,6 +21,9 @@ sub parse {
             if ( $ref eq 'SCALAR' ) {
                 my $html = $$arg;
                 unless ( $self->context->config->{not_decode} ) {
+                    if(utf8::is_utf8($html)){
+                        utf8::encode($html);
+                    }
                     $html = $self->decoder->decode($html);
                 }
                 return $html;
