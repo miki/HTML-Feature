@@ -1,6 +1,10 @@
 Revision history for Perl extension HTML::Feature
 
-3.00006 2009.08.21
+3.00008 2009.08.29
+    - set HTML::TreeBuilder's option at HTML::Feature::Engine::LDRFullFeed.
+      ( 'no_space_compacting(1)' and 'ignore_ignorable_whitespace(0)' ) 
+
+3.00007 2009.08.21
     - utf8::encode() the html string before passed to Data::Decode
 
 3.00006 2009.08.19

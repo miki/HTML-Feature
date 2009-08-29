@@ -61,7 +61,7 @@ sub _parse_response {
     }
     $c->{base_url} = $http_response->base;
     my $html = $http_response->content;
-    unless ( $self->context->config->{not_decode} ) {
+    unless ( $c->config->{not_decode} ) {
         $html = $self->decoder->decode( $html, { response => $http_response } );
     }
     return $html;
