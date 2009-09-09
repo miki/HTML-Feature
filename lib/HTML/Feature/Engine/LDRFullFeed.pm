@@ -3,9 +3,10 @@ use strict;
 use warnings;
 use HTML::TreeBuilder::XPath;
 use LWP::Simple;
-use Storable qw(retrieve store);
+use Storable qw(retrieve nstore);
 use JSON;
 use Encode;
+use Carp;
 use base qw(HTML::Feature::Base);
 
 __PACKAGE__->mk_accessors($_) for qw(_LDRFullFeed);
@@ -68,7 +69,7 @@ sub LDRFullFeed {
                 my $json =
                   get('http://wedata.net/databases/LDRFullFeed/items.json');
                 my $data = from_json($json);
-                store( $path, $data );
+                store( $data, $path );
             }
         }
         else {
@@ -105,6 +106,10 @@ sub LDRFullFeed {
 sub _detect_siteinfo {
     my $self = shift;
     my $url  = shift;
+    unless($url){
+        carp("WARNING: if you use 'HTML::Feature::Engine::LDRFullFeed', URL will be necessary (as second arguments)");
+        return;
+    }
     my $data = $self->LDRFullFeed;
     for my $item (@$data) {
         if ( ( $item->{data}->{url} ) && ( $url =~ /$item->{data}->{url}/ ) ) {

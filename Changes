@@ -1,5 +1,10 @@
 Revision history for Perl extension HTML::Feature
 
+3.00009 2009.09.09
+    - update LDRFullFeed's data(item.st)
+    - and some bug fix
+    - add a sample script
+
 3.00008 2009.08.29
     - set HTML::TreeBuilder's option at HTML::Feature::Engine::LDRFullFeed.
       ( 'no_space_compacting(1)' and 'ignore_ignorable_whitespace(0)' ) 

@@ -21,6 +21,7 @@ sub run {
     my $url      = shift;
     my $c        = $self->context;
     my $result   = HTML::Feature::Result->new;
+    return $result unless $$html_ref =~ /./; 
   LABEL:
     for my $engine ( @{ $self->{engines} } ) {
         $result = $engine->run( $html_ref, $url, $result );
