@@ -16,6 +16,8 @@ sub run {
     my $url      = shift;
     my $result   = shift;
     my $tree     = HTML::TreeBuilder::XPath->new;
+    $tree->no_space_compacting(1);
+    $tree->ignore_ignorable_whitespace(0);
     $tree->parse($$html_ref);
     $tree->eof;
     my $site_info = $self->_detect_siteinfo($url);
