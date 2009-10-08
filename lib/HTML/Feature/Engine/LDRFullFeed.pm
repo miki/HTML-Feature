@@ -69,7 +69,7 @@ sub LDRFullFeed {
                 my $json =
                   get('http://wedata.net/databases/LDRFullFeed/items.json');
                 my $data = from_json($json);
-                store( $data, $path );
+                nstore( $data, $path );
             }
         }
         else {

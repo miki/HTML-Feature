@@ -6,6 +6,7 @@ use HTML::Feature::Engine::LDRFullFeed;
 use HTML::Feature::Engine::GoogleADSection;
 use UNIVERSAL::require;
 use Encode;
+use Carp;
 use base qw(HTML::Feature::Base);
 
 sub new {
@@ -21,21 +22,26 @@ sub run {
     my $url      = shift;
     my $c        = $self->context;
     my $result   = HTML::Feature::Result->new;
-    return $result unless $$html_ref =~ /./; 
-  LABEL:
-    for my $engine ( @{ $self->{engines} } ) {
-        $result = $engine->run( $html_ref, $url, $result );
-        if ( $result->{matched_engine} ) {
-            if ( defined $c->{enc_type} ) {
-                $result->title(
-                    Encode::encode( $c->{enc_type}, $result->title ) );
-                $result->desc(
-                    Encode::encode( $c->{enc_type}, $result->desc ) );
-                $result->text(
-                    Encode::encode( $c->{enc_type}, $result->text ) );
+    eval {
+        LABEL: for my $engine ( @{ $self->{engines} } )
+        {
+            $result = $engine->run( $html_ref, $url, $result );
+            if ( $result->{matched_engine} ) {
+                if ( defined $c->{enc_type} ) {
+                    $result->title(
+                        Encode::encode( $c->{enc_type}, $result->title ) );
+                    $result->desc(
+                        Encode::encode( $c->{enc_type}, $result->desc ) );
+                    $result->text(
+                        Encode::encode( $c->{enc_type}, $result->text ) );
+                }
+                last LABEL;
             }
-            last LABEL;
         }
+    };
+    if ($@) {
+        carp("can not parse data");
+        return HTML::Feature::Result->new;
     }
     return $result;
 }

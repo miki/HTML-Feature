@@ -1,5 +1,11 @@
 Revision history for Perl extension HTML::Feature
 
+
+3.00010 2009.10.08
+    - fix a bug of Storable's 64bit-compatibility
+    - update LDRFullFeed's data(item.st)
+    - add simpple exception handling mechanism on HTML::Feature::Engine
+
 3.00009 2009.09.09
     - update LDRFullFeed's data(item.st)
     - and some bug fix
